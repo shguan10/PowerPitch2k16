@@ -13,4 +13,56 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="@string/hello_round" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/round_start_button"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="101dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/startButton"
+        android:layout_above="@+id/text"
+        android:layout_alignEnd="@+id/text"
+        android:layout_alignStart="@+id/text"
+        android:layout_below="@+id/textView"
+        android:background="@drawable/green_button"
+        android:contentDescription="@string/round_start_button_name" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/dist_traveled"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/text"
+        android:layout_alignEnd="@+id/text"
+        android:layout_alignStart="@+id/text" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/round_stop_button"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton"
+        android:background="@drawable/red_button"
+        android:contentDescription="@string/round_start_button_name"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="40dp" />
+
 </RelativeLayout>

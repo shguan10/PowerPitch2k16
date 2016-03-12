@@ -8,4 +8,5 @@
     app:rectLayout="@layout/rect_activity_main"
     app:roundLayout="@layout/round_activity_main"
     tools:context="eduxguan.imsa.powerpitch2k16.MainActivity"
-    tools:deviceIds="wear"></android.support.wearable.view.WatchViewStub>
+    tools:deviceIds="wear"
+    android:background="@drawable/imagination"></android.support.wearable.view.WatchViewStub>

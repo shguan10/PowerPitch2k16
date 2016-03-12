@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">PowerPitch2k16</string>
-    <string name="hello_round">Hello Round World!</string>
-    <string name="hello_square">Hello Square World!</string>
+    <string name="hello_round">Circle here. Hello World!</string>
+    <string name="hello_square">Square here. Hello World!</string>
+    <string name="round_start_button">Hit the green button to set start position</string>
+    <string name="rect_start_button">Hit the green button to set start position</string>
+    <string name="round_stop_button">Hit the red button to set stop position</string>
+    <string name="rect_stop_button">Hit the red button to set stop position</string>
+    <string name="round_start_button_name">green_setStartPosition_button</string>
+    <string name="dist_traveled">Here is your distance traveled.</string>
 </resources>
