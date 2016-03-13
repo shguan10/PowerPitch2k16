@@ -15,5 +15,25 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="This text is located in mobile/src/main/res/layout/content_main.xml"
+        android:id="@+id/appLocationText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="The Button has not yet been pressed"
+        android:id="@+id/buttonPressedText"
+        android:layout_below="@+id/appLocationText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="59dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button"
+        android:background="@drawable/red_button"
+        android:layout_below="@+id/buttonPressedText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
