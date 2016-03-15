@@ -108,6 +108,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
+    public void findDistance(){
+        //we need the previous speed
+    }
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
@@ -121,5 +125,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onResume();
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
+
+
 
 }
