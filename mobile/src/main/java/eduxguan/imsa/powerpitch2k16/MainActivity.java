@@ -16,16 +16,18 @@ import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
+public class MainActivity extends AppCompatActivity implements SensorEventListener, Runnable {
 
     //int clicked = 0;
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
     private long lastUpdate = 0;
-    private float last_x, last_y, last_z;
-    private static final int SHAKE_THRESHOLD = 600;
-    private long diffTime;
-
+    private double previousXAcc, previousYAcc, previousZAcc, previousXVel, previousYVel, previousZVel, previousXPos, previousYPos, previousZPos;
+    private static final int SHAKE_THRESHOLD = 600;//don't know if we need this
+    private int frequency = 200;
+    private double timeInterval = 1000/frequency;
+    private boolean running = false;
+    private double lineardistance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,23 +47,40 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });*/
 
-        //Below is the click counter implementation
-        /*final TextView text = (TextView) findViewById(R.id.buttonPressedText);
         final ImageButton button = (ImageButton) findViewById(R.id.button);
+        final TextView text = (TextView) findViewById(R.id.distanceText);
+
+        senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clicked++;
-                text.setText("The Button has been pressed " + clicked + " times");
+                running = !running;
+
+                if(running){
+                    previousXAcc = 0;
+                    previousYAcc = 0;
+                    previousZAcc = 0;
+                    previousXVel = 0;
+                    previousYVel = 0;
+                    previousZVel = 0;
+                    previousXPos = 0;
+                    previousYPos = 0;
+                    previousZPos = 0; //above, resets the values when accelerometer is "started up" again
+                } else {
+                    calculateTotalDistance();
+                    text.setText(lineardistance + " meters");//use whatever to display total distance onscreen
+                }
             }
 
-        });*/
+        });
 
-        senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -71,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {//for something else?
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -86,30 +105,47 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     @Override
-    public void onSensorChanged(SensorEvent sensorEvent) {
+    public void onSensorChanged(SensorEvent sensorEvent) {//do we have to do something with this because its not activated when the sensor changes?
         Sensor mySensor = sensorEvent.sensor;
 
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            float x = sensorEvent.values[0];
-            float y = sensorEvent.values[1];
-            float z = sensorEvent.values[2];
+            updateAcc(sensorEvent);
 
             long currentTime = System.currentTimeMillis();
 
             //Below, to make sure we don't use too many data
-            if ((currentTime - lastUpdate) > 50) {
-                diffTime = (currentTime - lastUpdate);
+            /*if ((currentTime - lastUpdate) > 50) {
+                timeInterval = (currentTime - lastUpdate);
                 lastUpdate = currentTime;
-            }
-            
-            
-            //Below, not sure what it does
-            float speed = Math.abs(x + y + z - last_x - last_y - last_z)/ diffTime * 10000;
+            }*/
         }
     }
 
-    public void findDistance(){
-        //we need the previous speed
+    public void update() {//updates the "previous acc, vel, pos, values to the current one
+        updateVel();
+        updatePos();
+    }
+
+    private void updatePos() {
+        previousXPos += timeInterval*previousXVel;
+        previousYPos += timeInterval*previousYVel;
+        previousZPos += timeInterval*previousZVel;
+    }
+
+    private void updateVel() {
+        previousXVel += timeInterval*previousXAcc;
+        previousYVel += timeInterval*previousYAcc;
+        previousZVel += timeInterval*previousZAcc;
+    }
+
+    private void updateAcc(SensorEvent sensorEvent) {
+        previousXAcc = sensorEvent.values[0];
+        previousYAcc = sensorEvent.values[1];
+        previousZAcc = sensorEvent.values[2];
+    }
+
+    private void calculateTotalDistance(){
+        lineardistance = Math.sqrt(Math.pow(previousXPos,2)+Math.pow(previousYPos,2)+Math.pow(previousZPos,2));
     }
 
     @Override
@@ -127,5 +163,24 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
 
+    @Override
+    public void run() {
+        long then = System.nanoTime();
+        long timer = System.currentTimeMillis();
+        final double nanos = 1000000000.0 / frequency;
+        double delta = 0;
+        while (running) {
+            long now = System.nanoTime();
+            delta += (now - then) / nanos;
+            then = now;
+            while (delta >= 1) {
+                update();
+                delta--;
+            }
 
+            if (System.currentTimeMillis() - timer > 1000) {
+                timer += 1000;
+            }
+        }
+    }
 }
