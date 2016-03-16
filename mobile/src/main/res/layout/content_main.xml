@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="The Button has not yet been pressed"
+        android:text="Press the Button to set start point. Move the phone to the end point. Press the Button again to stop measuring distance. It doesn't matter if you move in a line."
         android:id="@+id/distanceText"
         android:layout_below="@+id/appLocationText"
         android:layout_centerHorizontal="true"
