@@ -1,0 +1,1 @@
+This is a project we started for a business idea contest at my high school. The idea was a measuring tape app that uses the phone's accelerometers to judge the relative position from when the app starts.
